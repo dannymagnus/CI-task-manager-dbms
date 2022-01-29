@@ -12,14 +12,20 @@
 </div>
 
 <div class="row">
+    <!--Using the categories list passed from routes.py
+    creating a loop jinja templating language -->
     {% for category in categories %}
     <div class="col s12 m6 l3">
         <div class="card light-blue darken-4 center-align">
             <div class="card-content white-text">
+                <!--Here we choose which key from the category item in categories list to display-->
                 <span class="card-title">{{ category.category_name }}</span>
             </div>
             <div class="card-action">
-                <a href="#" class="btn green accent-4">Edit</a>
+                <!--here we are calling a function but with some data included
+                where category_id(Could be anything) is the variable being passed
+                category.id is the key asssigned to it-->
+                <a href="{{ url_for('edit_category', category_id = category.id ) }}" class="btn green accent-4">Edit</a>
                 <a href="#" class="btn red">Delete</a>
             </div>
         </div>
