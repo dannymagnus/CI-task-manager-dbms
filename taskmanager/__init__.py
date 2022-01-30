@@ -5,7 +5,8 @@
 # example here https://www.youtube.com/watch?v=cONc0NcKE7s
 #import os so that env variables can be accessed, this wont work once in git.
 import os
-
+#regular expression package - needed for postgress on heroku
+import re
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 #only import the environmental variable if path exists (local environment)
@@ -23,8 +24,11 @@ if os.environ.get("DEVELOPMENT") == 'True':
     #gives the url for the local database
     app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DB_URL")
 else:
+    uri = os.environ.get("DATABASE_URL")
+    if uri.startswith("postgres://"):
+        uri = uri.replace("postgres://", "postgresql://", 1)
     #this is the Heroku database
-    app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
+    app.config["SQLALCHEMY_DATABASE_URI"] = uri
 
 db = SQLAlchemy(app)
 
