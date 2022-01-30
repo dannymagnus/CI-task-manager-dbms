@@ -17,8 +17,14 @@ if os.path.exists("env.py"):
 app = Flask(__name__)
 #gives flask a secret key to work
 app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY")
-#gives the url for the database
-app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DB_URL")
+#this is to check if we are working in local IDE as when deployed we wont be
+#accessing our own database but one we make in heroku
+if os.environ.get("DEVELOPMENT") == 'True':
+    #gives the url for the local database
+    app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DB_URL")
+else:
+    #this is the Heroku database
+    app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
 
 db = SQLAlchemy(app)
 
